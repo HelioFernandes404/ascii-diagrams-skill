@@ -1,32 +1,24 @@
 ---
 name: ascii-diagrams
 description: >
-  Create professional ASCII diagrams for code comments, documentation, architecture docs, and technical
-  communication. Based on the CHI'24 research paper "Taking ASCII Drawings Seriously" which analyzed 2,156
-  real diagrams from Linux, Chromium, LLVM, and TensorFlow. Use this skill whenever the user asks for a
-  diagram, visualization, flowchart, architecture drawing, state machine, data structure illustration,
-  memory layout, network topology, table, tree, or any visual representation using ASCII/text art in code
-  or documentation. Also trigger when the user says "draw", "diagram", "illustrate", "visualize",
-  "sketch", "show the flow", "show the architecture", or wants to add a visual explanation to code
-  comments, READMEs, ADRs, or technical docs. Even if they don't say "ASCII" explicitly — if they want
-  a text-based diagram, this is the skill to use.
+  Use when the user asks for a diagram, flowchart, architecture drawing, state machine, tree, table,
+  network topology, memory layout, or any text-based visual in code comments, READMEs, ADRs, or technical
+  docs. Also use when the user says "draw", "diagram", "illustrate", "visualize", "sketch", "show the
+  flow", or "show the architecture", even if they do not explicitly say "ASCII".
 ---
 
 # ASCII Diagrams
 
-Create clear, professional ASCII diagrams that live naturally in code comments, documentation, and
-technical communication. ASCII diagrams are simultaneously text and visual — they work in every tool
-developers already use (editors, terminals, git diffs, code review, commit messages) without external
-dependencies.
+Draw clear ASCII diagrams that fit naturally in code comments, documentation, and reviews. Prefer
+patterns that render in plain text, survive diffs, and map directly to real code identifiers.
 
-This skill is grounded in research analyzing 2,156 real diagrams from major open-source codebases
-(Linux kernel, Chromium, LLVM, TensorFlow), giving you patterns that real developers actually use and
-understand.
+Base your choices on patterns observed in Linux, Chromium, LLVM, and TensorFlow, not on decorative
+ASCII art.
 
 ## When to create an ASCII diagram
 
-Diagrams are most valuable when they serve as a **thumbnail for code** — less detailed than the code
-itself but more approachable, giving readers a mental model before they dive in. The best use cases:
+Create a diagram only when it gives the reader a fast visual model before they dive into the code.
+Use it for:
 
 - **Architecture and data flow**: how components connect and data moves between them
 - **Data structures and memory layouts**: how bits, bytes, and fields are organized
@@ -36,18 +28,16 @@ itself but more approachable, giving readers a mental model before they dive in.
 - **Algorithms**: step-by-step transformations
 - **Before/after comparisons**: showing change over time
 
-A diagram is NOT needed for things that are self-evident from the code. The question to ask: "Would
-someone reading this code benefit from a visual overview before diving in?"
+Do not add a diagram for something the code already shows clearly in linear form.
 
 ## Core principles
 
 ### 1. Alignment is everything
-Monospace text gives you a grid. Use it. Every character occupies exactly one cell. Vertical lines
-must be vertically aligned. Horizontal lines must span consistently. Misaligned diagrams are worse
-than no diagram — they confuse rather than clarify.
+Treat monospace text as a grid. Align every vertical line, keep horizontal spans consistent, and fix
+misalignment before you ship the diagram.
 
 ### 2. Use standard characters that render everywhere
-Prefer basic ASCII characters that work in any font, terminal, or tool:
+Prefer basic ASCII characters that render in any font, terminal, or tool:
 
 | Purpose | Characters | Notes |
 |---------|-----------|-------|
@@ -62,28 +52,24 @@ Prefer basic ASCII characters that work in any font, terminal, or tool:
 | Elision | `...` `~~~` | "More of the same" |
 | Labels | Text inline or beside | Always label clearly |
 
-Unicode box-drawing characters (`─ │ ┌ ┐ └ ┘ ├ ┤ ┬ ┴ ┼`) produce cleaner output but may break in
-some terminals and make diffs harder to read. Use them only when the target context supports it
-(e.g., README.md rendered on GitHub). For code comments, stick with ASCII.
+Use Unicode box-drawing characters (`─ │ ┌ ┐ └ ┘ ├ ┤ ┬ ┴ ┼`) only when the target context supports
+them, such as a GitHub-rendered README. In code comments, stick to ASCII.
 
 ### 3. Keep it minimal
-A diagram should show the essential structure, not every detail. Real-world diagrams in Linux and
-Chromium average 10-20 lines. If your diagram grows beyond ~30 lines, consider splitting it or
-simplifying.
+Show the essential structure, not every detail. If the diagram grows beyond ~30 lines, split it or
+simplify it.
 
 ### 4. Connect to the code
-The best ASCII diagrams reference real identifiers, constants, and expressions from the surrounding
-code. When a diagram labels a box `root1`, readers can grep for `root1` in the code. This connection
-between diagram and code is what makes ASCII diagrams powerful.
+Reference real identifiers, constants, and expressions from the surrounding code so the reader can
+jump between the diagram and the implementation.
 
 ### 5. Show what text cannot
-Don't diagram things that are obvious from reading the code linearly. Diagram things that have
-**spatial relationships** — hierarchies, networks, layouts, flows with branches — that are hard to
-convey in prose.
+Diagram **spatial relationships** such as hierarchies, networks, layouts, and branched flows. Do not
+diagram relationships that plain prose or code already shows clearly.
 
 ## Design space — choosing the right form
 
-Before drawing, decide what concept you're showing and which visual form fits it best:
+Before drawing, choose the concept you need to show and the visual form that fits it best:
 
 ### Visual encodings (how to draw it)
 
@@ -118,7 +104,7 @@ Before drawing, decide what concept you're showing and which visual form fits it
 
 ## Diagram patterns by type
 
-For detailed examples, read the reference file for the specific category you need:
+Use the reference file instead of copying examples into this skill:
 
 | Category | Reference file | Use for |
 |----------|---------------|---------|
@@ -130,157 +116,31 @@ For detailed examples, read the reference file for the specific category you nee
 | Sequences/Tables | `references/sequences-tables.md` | Request flows, timelines, comparison tables |
 | Graphs/Annotations | `references/graphs-annotations.md` | DAGs, code annotations, before/after, UI sketches |
 
-### Flowchart / Control flow
-```
-  +----------+     +----------+     +----------+
-  |  Start   |---->| Process  |---->|   End    |
-  +----------+     +----+-----+     +----------+
-                        |
-                        v
-                   +----+-----+
-                   | Alternate |
-                   +----------+
-```
-
-### State machine
-```
-         +-------+   event_a   +-------+
-   ----->| IDLE  |------------>| ACTIVE|
-         +---+---+             +---+---+
-             ^                     |
-             |     event_b         |
-             +---------------------+
-```
-
-### Tree / Hierarchy
-```
-    root
-    |
-    +-- child_a
-    |   +-- leaf_1
-    |   +-- leaf_2
-    |
-    +-- child_b
-        +-- leaf_3
-```
-
-### Data structure / Memory layout
-```
-  +--------+--------+--------+--------+
-  | Header | Type   | Length | Data   |
-  | 4 bytes| 2 bytes| 2 bytes| N bytes|
-  +--------+--------+--------+--------+
-  0        4        6        8        8+N
-```
-
-### Network topology
-```
-  +--------+         +--------+
-  | Host A |---eth0--| Switch |---eth1--| Host B |
-  +--------+         +--------+         +--------+
-                         |
-                       eth2
-                         |
-                     +--------+
-                     | Host C |
-                     +--------+
-```
-
-### Table
-```
-  Operation    | Time     | Space
-  -------------|----------|--------
-  Insert       | O(log n) | O(1)
-  Search       | O(log n) | O(1)
-  Delete       | O(log n) | O(1)
-```
-
-### Sequence / Timeline
-```
-  t0        t1        t2        t3
-  |         |         |         |
-  v         v         v         v
-  [init] -> [load] -> [ready] -> [serve]
-```
-
-### Nested containment
-```
-  +--- Namespace: production --------+
-  |                                  |
-  |  +--- Pod: api-server -------+  |
-  |  |  +--- Container: app --+  |  |
-  |  |  |  port: 8080         |  |  |
-  |  |  +---------------------+  |  |
-  |  +---------------------------+  |
-  |                                  |
-  +----------------------------------+
-```
-
-### Before/After comparison
-```
-  BEFORE:                    AFTER:
-  A --> B --> C              A --> B --> C
-        |                         |
-        v                         v
-        D                    D ---+--> E
-```
-
-### Bit field / Register layout
-```
-  31      24 23    16 15     8 7      0
-  +--------+--------+--------+--------+
-  | Flags  | Type   | Length | Opcode |
-  +--------+--------+--------+--------+
-```
+When responding:
+- Pick the closest reference file first
+- Reuse or adapt a pattern from `references/`
+- Keep `SKILL.md` as guidance/index, not as the full example catalog
 
 ## Writing diagrams in code comments
 
-When placing a diagram in a code comment, follow the conventions of the language:
+When placing a diagram in a code comment:
 
-```c
-/*
- * Packet structure:
- *
- *  +--------+--------+--------+
- *  | Header | Payload| CRC    |
- *  +--------+--------+--------+
- *  0        8        8+len    8+len+4
- */
-```
-
-```python
-# Request flow:
-#
-#   Client --> [Load Balancer] --> [App Server] --> [Database]
-#                    |
-#                    +-----------> [Cache]
-```
-
-```yaml
-# Architecture:
-#
-#   +----------+    +---------+    +--------+
-#   | vmagent  |--->| vmtsdb  |--->| vmalert|
-#   +----------+    +---------+    +--------+
-#                                      |
-#                                      v
-#                                 +-----------+
-#                                 |alertmanager|
-#                                 +-----------+
-```
+- Preserve the host language comment prefix on every line
+- Keep alignment valid after adding `#`, `//`, or `*`
+- Pull the base pattern from the matching file in `references/`
+- Adapt names to real identifiers from the surrounding code
 
 ## Alignment checklist
 
 Before finalizing any diagram, verify:
 
-1. All vertical lines (`|`) in the same column are aligned
-2. All box corners (`+`) connect properly to their horizontal (`-`) and vertical (`|`) lines
-3. Arrow heads (`>`, `<`, `^`, `v`) point in the intended direction
-4. Labels fit inside boxes without overflow
-5. The diagram renders correctly in a monospace font (no proportional font assumptions)
-6. If inside a comment block, comment prefixes (`//`, `#`, `*`) don't break alignment
-7. Widths are consistent — if one box in a row is 10 chars wide, consider making all boxes in
-   that row the same width for visual harmony
+1. Align all vertical lines (`|`) in the same column
+2. Connect every box corner (`+`) to the intended horizontal (`-`) and vertical (`|`) lines
+3. Point every arrow head (`>`, `<`, `^`, `v`) in the intended direction
+4. Keep labels inside boxes without overflow
+5. Render the diagram in a monospace font
+6. Recheck alignment after adding comment prefixes such as `//`, `#`, or `*`
+7. Keep widths consistent across comparable boxes
 
 ## Common mistakes to avoid
 
