@@ -20,17 +20,14 @@ Use for: dependency graphs, DAGs, compilation pipelines.
 
 Use for: pointing at specific parts of code to explain them.
 
-**Annotated register bits (from Linux kernel):**
+**Annotated register layout:**
 ```
-  Exception Masks--+          +---Exception Flags
-                   |          |
-  Flush-to-zero---+  +----+  +----+
-                  |  |    |  |    |
-                  FRRMMMMMDEEEEEE
-                  ||      |
-                  ++      ----Denormals-are-zero
-                  |
-                  +---Rounding Mode
+  31            24 23            16 15             8 7             0
+  +----------------+----------------+----------------+---------------+
+  | flags          | mode           | reserved       | opcode        |
+  +----------------+----------------+----------------+---------------+
+    |                |                                  |
+    +-- N/Z/C/V      +-- rounding mode                  +-- command id
 ```
 
 **File format annotation (from Chromium):**
