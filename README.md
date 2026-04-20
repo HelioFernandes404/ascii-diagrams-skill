@@ -7,8 +7,22 @@ Based on the CHI'24 research paper [*"Taking ASCII Drawings Seriously: How Progr
 ## Install
 
 ```
-claude skills add HelioFernandes404/ascii-diagrams-skill
+npx skills add HelioFernandes404/ascii-diagrams-skill
 ```
+
+Install for Codex only:
+
+```bash
+npx skills add HelioFernandes404/ascii-diagrams-skill -a codex
+```
+
+Install globally for Codex without prompts:
+
+```bash
+npx skills add HelioFernandes404/ascii-diagrams-skill -a codex -g -y
+```
+
+`--skill` is not needed because this repository exposes a single skill from the root `SKILL.md`.
 
 ## What it covers
 
