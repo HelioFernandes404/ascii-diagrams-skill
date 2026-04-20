@@ -16,6 +16,12 @@ Install for Codex only:
 npx skills add HelioFernandes404/ascii-diagrams-skill -a codex
 ```
 
+Install for Claude Code only:
+
+```bash
+npx skills add HelioFernandes404/ascii-diagrams-skill -a claude-code
+```
+
 Install globally for Codex without prompts:
 
 ```bash
